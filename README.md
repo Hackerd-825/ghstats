@@ -9,10 +9,11 @@ Le site web est dans `public/index.html` : il est servi automatiquement à la ra
 ## Utilisation dans un README
 ![Stats](https://TON-APP.vercel.app/api/stats?username=hackerd_825)
 ![Langages](https://TON-APP.vercel.app/api/langs?username=hackerd_825)
-![Trophées](https://TON-APP.vercel.app/api/trophies?username=hackerd_825&cols=5)
+![Activité](https://TON-APP.vercel.app/api/activity?username=hackerd_825)
+![XP](https://TON-APP.vercel.app/api/xp?username=hackerd_825)
 ![Score](https://TON-APP.vercel.app/api/badge?username=hackerd_825)
 
-Options : `theme=dark|light`, `hide_bg=true`, `cols=4` (trophées).
+Options : `theme=dark|light`, `hide_bg=true`.
 
 ## Barème
 Étoiles x3, commits x1, repos x2, followers x2, PR x4, issues x2, reviews x3, langages x2, streak x2.
