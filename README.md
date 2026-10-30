@@ -2,10 +2,9 @@
 
 Le site web est dans `public/index.html` : il est servi automatiquement à la racine de ton domaine Vercel (entre un pseudo, copie les badges).
 
-## Déploiement (2 min)
-1. Crée un token : GitHub > Settings > Developer settings > Personal access tokens (classic), aucun scope requis (données publiques).
-2. Push ce dossier sur un repo GitHub, puis "Import" sur vercel.com.
-3. Dans Vercel > Settings > Environment Variables : `GITHUB_TOKEN` = ton token. Redéploie.
+## Déploiement (aucune clé nécessaire)
+1. Push ce dossier sur un repo GitHub.
+2. Sur vercel.com : "Import" du repo, puis Deploy. C'est tout.
 
 ## Utilisation dans un README
 ![Stats](https://TON-APP.vercel.app/api/stats?username=hackerd_825)

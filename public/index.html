@@ -130,7 +130,7 @@ async function analyze(u){
  const b=$('#b');b.disabled=true;b.textContent='Analyse…';
  try{
   const r=await fetch('/api/user?username='+encodeURIComponent(u)),j=await r.json().catch(()=>({}));
-  if(!r.ok||!j.score)throw new Error(j.error||'Erreur serveur : vérifie GITHUB_TOKEN dans Vercel');
+  if(!r.ok||!j.score)throw new Error(j.error||'Erreur serveur, réessaie dans un instant');
   user=u;const s=j.score,st=j.stats;
   $('#g').textContent=s.grade;$('#lv').textContent='NIVEAU '+s.level;
   $('#n').innerHTML=`<span>@</span>${u}`;
