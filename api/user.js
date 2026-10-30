@@ -8,6 +8,6 @@ module.exports = async (req, res) => {
     res.setHeader('Cache-Control', 'public, s-maxage=14400, stale-while-revalidate=86400');
     res.status(200).json({ login: u, score: sc, stats: { ...s, langs: s.langs.slice(0, 8).map(l => l.name) } });
   } catch (e) {
-    res.status(400).json({ error: e.message === 'Could not resolve to a User with the login of \'' + req.query.username + '\'.' ? 'Utilisateur introuvable' : e.message });
+    res.status(400).json({ error: e.message });
   }
 };

@@ -3,128 +3,144 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>GHStats · Badges GitHub avec score, XP et trophées</title>
-<meta name="description" content="Entre ton pseudo GitHub : analyse de tous tes repos publics, score, niveau, top langages et trophées à copier dans ton README.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏆</text></svg>">
+<title>GHSTATS — Score ton GitHub</title>
+<meta name="description" content="Entre un pseudo GitHub, récupère un grade, un niveau et des badges à coller dans ton README.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#070a12;--card:#0f1422;--bd:#222b42;--tx:#e6edf7;--sub:#8b98b5;--a:#58a6ff;--b:#8b5cf6}
-*{box-sizing:border-box;margin:0}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);line-height:1.5;
-background-image:radial-gradient(900px 500px at 15% -10%,#1b2a5c55,transparent),radial-gradient(800px 500px at 90% 0,#4b2a8a44,transparent);background-repeat:no-repeat}
-.w{max-width:1040px;margin:0 auto;padding:0 20px}
-nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0}
-.logo{font-weight:800;font-size:20px}.logo span{background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
-nav a{color:var(--sub);text-decoration:none;font-size:14px;margin-left:18px}nav a:hover{color:var(--tx)}
-.hero{text-align:center;padding:50px 0 30px}
-.hero h1{font-size:clamp(32px,6vw,56px);line-height:1.1;font-weight:800;letter-spacing:-1px}
-.hero h1 span{background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero p{color:var(--sub);max-width:600px;margin:16px auto 28px;font-size:17px}
-.search{display:flex;gap:10px;max-width:520px;margin:0 auto;background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:8px}
-.search input{flex:1;background:none;border:0;outline:0;color:var(--tx);font-size:16px;padding:8px 12px;min-width:0}
-button{font:inherit;cursor:pointer;border:0;border-radius:10px}
-.go{background:linear-gradient(90deg,var(--a),var(--b));color:#fff;font-weight:700;padding:10px 20px}
-.go:disabled{opacity:.6}
-.err{color:#f85149;margin-top:14px;min-height:22px}
-.feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:20px 0 60px}
-.f{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:18px}.f b{display:block;margin-bottom:4px}.f small{color:var(--sub)}
-#res{display:none;padding-bottom:40px}
-.sum{display:flex;flex-wrap:wrap;gap:18px;align-items:center;background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:22px;margin-bottom:20px}
-.grade{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;font-size:38px;font-weight:800;border:6px solid var(--a);color:var(--a)}
-.sum .i{flex:1;min-width:220px}.sum h2{font-size:24px}.bar{height:10px;background:var(--bd);border-radius:6px;margin:10px 0 4px;overflow:hidden}
-.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--a),var(--b));border-radius:6px;transition:width .8s}
-.sum small{color:var(--sub)}
-.tool{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px}
-.seg{display:flex;background:var(--card);border:1px solid var(--bd);border-radius:10px;overflow:hidden}
-.seg button{background:none;color:var(--sub);padding:8px 16px}.seg .on{background:var(--bd);color:var(--tx)}
-.all{background:var(--tx);color:#000;font-weight:700;padding:9px 18px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:16px}
-.c{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:18px;min-width:0}
-.c.full{grid-column:1/-1}
-.c h3{font-size:15px;margin-bottom:12px;color:var(--sub);font-weight:600}
-.c .pv{display:flex;justify-content:center;overflow-x:auto;padding:6px 0 14px}.c img{max-width:100%;height:auto}
-code{display:block;background:#05070d;border:1px solid var(--bd);border-radius:10px;padding:10px 12px;font:12px/1.5 Consolas,monospace;color:#9fb3d9;word-break:break-all;margin-bottom:10px}
-.cp{background:var(--bd);color:var(--tx);padding:7px 14px;font-size:13px}.cp:hover{background:#2c3855}
-h2.s{font-size:28px;margin:60px 0 18px}
-.tb{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--bd);border-radius:14px;overflow:hidden}
-.tb td,.tb th{padding:10px 16px;text-align:left;border-bottom:1px solid var(--bd);font-size:14px}.tb th{color:var(--sub);font-weight:600}
-.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.chip{padding:8px 16px;border-radius:999px;border:1px solid var(--bd);background:var(--card);font-weight:700}
-.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
-footer{text-align:center;color:var(--sub);font-size:13px;padding:50px 0 30px}
-#t{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#22c55e;color:#000;font-weight:700;padding:10px 20px;border-radius:10px;transition:.3s}
-#t.on{transform:translateX(-50%)}
+:root{--bg:#0b0b0a;--ink:#f2efe6;--acc:#d4ff3a;--dim:#77756c;--line:#2a2a26;--d:'Bricolage Grotesque','Arial Black',sans-serif;--m:'JetBrains Mono',Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:15px/1.6 var(--m);-webkit-font-smoothing:antialiased;
+background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:80px 80px;background-position:-1px -1px}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0,transparent 20%,var(--bg) 85%);pointer-events:none}
+.w{max-width:1200px;margin:0 auto;padding:0 28px;position:relative}
+::selection{background:var(--acc);color:#000}
+a{color:inherit}
+.top{display:flex;justify-content:space-between;padding:22px 0;font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--dim)}
+.top b{color:var(--ink)}
+h1{font:800 clamp(64px,14.5vw,200px)/.82 var(--d);letter-spacing:-.045em;text-transform:uppercase;margin:6vh 0 34px}
+h1 em{font-style:normal;background:var(--acc);color:#000;padding:0 .08em;display:inline-block;transform:rotate(-1.2deg)}
+.lead{max-width:520px;color:var(--dim);margin-bottom:34px}
+.lead b{color:var(--ink);font-weight:400}
+form{display:flex;border:2px solid var(--ink);background:var(--bg);max-width:760px}
+form label{padding:18px 0 18px 20px;color:var(--dim);font-size:18px}
+form input{flex:1;min-width:0;background:none;border:0;outline:0;color:var(--ink);font:700 18px var(--m);padding:18px 8px}
+form input::placeholder{color:#3d3d37}
+form button{background:var(--acc);border:0;color:#000;font:700 14px var(--m);letter-spacing:.1em;padding:0 28px;cursor:pointer;text-transform:uppercase;transition:.15s}
+form button:hover{background:var(--ink)}form button:disabled{opacity:.5}
+#e{color:#ff5c4d;min-height:26px;margin-top:12px;font-size:13px}
+.tick{margin:60px 0 0;border-block:2px solid var(--ink);background:var(--acc);color:#000;overflow:hidden;white-space:nowrap}
+.tick div{display:inline-block;padding:10px 0;font:800 20px var(--d);text-transform:uppercase;letter-spacing:.02em;animation:m 28s linear infinite}
+@keyframes m{to{transform:translateX(-50%)}}
+#res{display:none;padding-top:70px}
+.sum{display:grid;grid-template-columns:auto 1fr;border:2px solid var(--ink);background:var(--bg)}
+.gr{font:800 clamp(150px,22vw,280px)/.8 var(--d);color:var(--acc);padding:34px 44px 14px;border-right:2px solid var(--ink);display:flex;flex-direction:column;align-items:center}
+.gr small{font:700 13px var(--m);color:var(--ink);letter-spacing:.2em;margin-top:18px}
+.inf{padding:30px 34px;display:flex;flex-direction:column;justify-content:space-between;gap:22px;min-width:0}
+.inf h2{font:800 clamp(30px,5vw,56px)/1 var(--d);text-transform:uppercase;letter-spacing:-.03em;word-break:break-all}
+.inf h2 span{color:var(--acc)}
+.seg{display:grid;grid-template-columns:repeat(20,1fr);gap:4px}.seg i{height:22px;background:var(--line)}.seg i.f{background:var(--acc)}
+.meta{display:flex;justify-content:space-between;font-size:12px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin-top:8px}
+.kv{display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid var(--line)}
+.kv div{padding:14px 0 0}.kv b{display:block;font:800 30px/1 var(--d)}.kv span{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.12em}
+.bar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin:34px 0 18px}
+.tg{display:flex;border:2px solid var(--ink)}.tg button{background:none;border:0;color:var(--dim);font:700 12px var(--m);letter-spacing:.1em;text-transform:uppercase;padding:11px 20px;cursor:pointer}.tg .on{background:var(--ink);color:#000}
+.all{background:var(--acc);color:#000;border:2px solid var(--acc);font:700 12px var(--m);letter-spacing:.1em;text-transform:uppercase;padding:11px 22px;cursor:pointer}.all:hover{background:none;color:var(--acc)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:2px solid var(--ink);background:var(--bg)}
+.c{padding:0;border:1px solid var(--line);min-width:0}.c.full{grid-column:1/-1}
+.ch{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line);font-size:12px;text-transform:uppercase;letter-spacing:.12em}
+.ch span{color:var(--acc);margin-right:12px}
+.cp{background:none;border:0;color:var(--dim);font:700 12px var(--m);letter-spacing:.1em;cursor:pointer;text-transform:uppercase}.cp:hover{color:var(--acc)}
+.pv{display:flex;justify-content:center;padding:26px 16px;overflow-x:auto;background-image:radial-gradient(#2a2a26 1px,transparent 1px);background-size:14px 14px}
+.pv img{max-width:100%;height:auto;display:block}
+code{display:block;padding:12px 20px;border-top:1px solid var(--line);color:var(--dim);font-size:11.5px;word-break:break-all}
+.how{display:grid;grid-template-columns:1fr 1.2fr;gap:60px;padding:120px 0 60px}
+.how h2{font:800 clamp(48px,8vw,110px)/.85 var(--d);text-transform:uppercase;letter-spacing:-.04em}
+.how p{color:var(--dim);margin-top:24px;max-width:380px}.how p b{color:var(--ink);font-weight:400}
+.r{display:flex;align-items:baseline;gap:10px;padding:13px 0;border-bottom:1px solid var(--line)}
+.r i{flex:1;border-bottom:1px dotted #3d3d37;transform:translateY(-4px)}.r b{color:var(--acc)}
+.gl{display:flex;margin-top:30px;border:2px solid var(--ink)}.gl div{flex:1;text-align:center;padding:14px 4px;border-right:2px solid var(--ink)}.gl div:last-child{border:0}
+.gl b{display:block;font:800 32px/1 var(--d);color:var(--acc)}.gl span{font-size:11px;color:var(--dim)}
+footer{border-top:2px solid var(--ink);padding:26px 0 40px;display:flex;justify-content:space-between;color:var(--dim);font-size:12px;text-transform:uppercase;letter-spacing:.1em;flex-wrap:wrap;gap:10px}
+#t{position:fixed;bottom:26px;right:26px;background:var(--acc);color:#000;font:700 13px var(--m);text-transform:uppercase;letter-spacing:.1em;padding:12px 20px;transform:translateY(90px);transition:.25s;z-index:9}#t.on{transform:none}
+@media(max-width:800px){.sum{grid-template-columns:1fr}.gr{border-right:0;border-bottom:2px solid var(--ink)}.grid{grid-template-columns:1fr}.how{grid-template-columns:1fr;gap:30px;padding-top:80px}.kv{grid-template-columns:repeat(2,1fr)}form label{display:none}form input{padding-left:18px}}
 </style>
 </head>
 <body>
 <div class="w">
-<nav><div class="logo">🏆 <span>GHStats</span></div><div><a href="#how">Comment ça marche</a><a href="https://github.com" target="_blank" rel="noopener">GitHub</a></div></nav>
+<div class="top"><b>GHSTATS ©2026</b><span>Grade · XP · Trophées</span></div>
 
-<header class="hero">
-<h1>Transforme ton GitHub en <span>score, XP et trophées</span></h1>
-<p>Entre ton pseudo : on analyse tous tes repos publics, on calcule ton niveau et on te donne les badges à coller dans ton README.</p>
-<form class="search" id="f"><input id="u" placeholder="ton-pseudo-github" autocomplete="off" spellcheck="false" autofocus><button class="go" id="b">Analyser</button></form>
-<div class="err" id="e"></div>
-</header>
+<h1>Score<br>ton <em>GitHub</em></h1>
+<p class="lead">Tape un pseudo. On lit <b>tous les repos publics</b>, on compte ce que tu as vraiment livré, et on te rend un grade, un niveau et des badges à coller dans ton README.</p>
+<form id="f"><label>github.com/</label><input id="u" placeholder="pseudo" autocomplete="off" spellcheck="false" autofocus><button id="b">Analyser →</button></form>
+<div id="e"></div>
+</div>
 
+<div class="tick"><div id="tk"></div></div>
+
+<div class="w">
 <div id="res">
-<div class="sum"><div class="grade" id="g">C</div>
-<div class="i"><h2 id="n"></h2><div class="bar"><i id="x" style="width:0"></i></div><small id="xs"></small></div></div>
-<div class="tool">
-<div class="seg"><button data-t="dark" class="on">Sombre</button><button data-t="light">Clair</button></div>
-<button class="all" id="all">📋 Copier tout pour mon README</button>
+<div class="sum">
+<div class="gr"><span id="g">C</span><small id="lv">NIVEAU 1</small></div>
+<div class="inf">
+<h2 id="n"></h2>
+<div><div class="seg" id="sg"></div><div class="meta"><span id="xs"></span><span id="nx"></span></div></div>
+<div class="kv" id="kv"></div>
+</div></div>
+
+<div class="bar">
+<div class="tg"><button data-t="dark" class="on">Sombre</button><button data-t="light">Clair</button></div>
+<button class="all" id="all">Copier le bloc README</button>
 </div>
 <div class="grid" id="cards"></div>
 </div>
 
-<section class="feat">
-<div class="f"><b>📊 Stats complètes</b><small>Commits, étoiles, streak, tendance hebdo, jour le plus actif…</small></div>
-<div class="f"><b>⚡ Score & niveaux</b><small>Chaque action rapporte de l'XP. Ton grade évolue avec toi.</small></div>
-<div class="f"><b>🌈 Top langages</b><small>Calculé sur tous tes repos publics, forks exclus.</small></div>
-<div class="f"><b>🏅 Trophées</b><small>9 trophées de rang S à C qui se débloquent en progressant.</small></div>
+<section class="how" id="how">
+<div><h2>Le<br>calcul</h2><p>Chaque action rapporte de l'<b>XP</b>. L'XP donne ton niveau : <b>⌊√(XP/5)⌋ + 1</b>. Plus tu montes, plus le suivant coûte cher.</p></div>
+<div>
+<div class="r">Commit de l'année<i></i><b>+1</b></div><div class="r">Étoile reçue<i></i><b>+3</b></div><div class="r">Repo public<i></i><b>+2</b></div>
+<div class="r">Follower<i></i><b>+2</b></div><div class="r">Pull request<i></i><b>+4</b></div><div class="r">Issue ouverte<i></i><b>+2</b></div>
+<div class="r">Review de PR<i></i><b>+3</b></div><div class="r">Langage utilisé<i></i><b>+2</b></div><div class="r">Jour de streak<i></i><b>+2</b></div>
+<div class="gl"><div><b>D</b><span>0</span></div><div><b>C</b><span>250</span></div><div><b>B</b><span>700</span></div><div><b>A</b><span>1500</span></div><div><b>S</b><span>3000</span></div></div>
+</div>
 </section>
-
-<h2 class="s" id="how">Comment est calculé le score ?</h2>
-<div class="two">
-<table class="tb"><tr><th>Action</th><th>XP</th></tr>
-<tr><td>Commit (année en cours)</td><td>+1</td></tr><tr><td>Étoile reçue</td><td>+3</td></tr><tr><td>Repo public</td><td>+2</td></tr>
-<tr><td>Follower</td><td>+2</td></tr><tr><td>Pull request</td><td>+4</td></tr><tr><td>Issue ouverte</td><td>+2</td></tr>
-<tr><td>Review de PR</td><td>+3</td></tr><tr><td>Langage utilisé</td><td>+2</td></tr><tr><td>Jour de streak</td><td>+2</td></tr></table>
-<div><p style="color:var(--sub)">Ton <b style="color:var(--tx)">XP total</b> donne ton niveau : <code style="display:inline;padding:2px 8px">niveau = ⌊√(XP/5)⌋ + 1</code>. Plus tu montes, plus il faut d'XP pour passer au niveau suivant.</p>
-<div class="chips"><span class="chip">D · 0</span><span class="chip" style="color:#4a9d6b">C · 250</span><span class="chip" style="color:#2c9fbf">B · 700</span><span class="chip" style="color:#8b5cf6">A · 1500</span><span class="chip" style="color:#c084fc">S · 3000</span></div>
-<p style="color:var(--sub);margin-top:14px">Les 9 trophées (stars, repos, commits, followers, expérience, issues, PR, reviews, multi-langages) ont chacun leur rang de C à S.</p></div>
+<footer><span>Données publiques · API GitHub</span><span>Cache 4 h</span></footer>
 </div>
-<footer>Fait avec ❤️ · Données publiques de l'API GitHub · Mise à jour toutes les 4 h</footer>
-</div>
-<div id="t">Copié !</div>
+<div id="t">Copié</div>
 
 <script>
 const $=s=>document.querySelector(s),O=location.origin;
 let user='',theme='dark';
-const KINDS=[['stats','Carte de stats',''],['langs','Top langages',''],['trophies','Trophées','&cols=5'],['badge','Badge de score','']];
+$('#tk').innerHTML=('S A B C D — XP — NIVEAU — STREAK — COMMITS — TROPHÉES — ').repeat(12);
+const K=[['stats','Stats',''],['langs','Langages',''],['trophies','Trophées','&cols=5'],['badge','Badge score','']];
 const url=(k,x='')=>`${O}/api/${k}?username=${user}&theme=${theme}${x}`;
-function toast(m){const t=$('#t');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),1600)}
-async function copy(txt){try{await navigator.clipboard.writeText(txt)}catch{const a=document.createElement('textarea');a.value=txt;document.body.append(a);a.select();document.execCommand('copy');a.remove()}toast('Copié !')}
 const md=(k,x,t)=>`![${t}](${url(k,x)})`;
+function toast(m){const t=$('#t');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),1500)}
+async function copy(s){try{await navigator.clipboard.writeText(s)}catch{const a=document.createElement('textarea');a.value=s;document.body.append(a);a.select();document.execCommand('copy');a.remove()}toast('Copié')}
 function render(){
- $('#cards').innerHTML=KINDS.map(([k,t,x],i)=>`<div class="c ${k==='trophies'?'full':''}"><h3>${t}</h3><div class="pv"><img src="${url(k,x)}" alt="${t}" loading="lazy"></div><code>${md(k,x,t)}</code><button class="cp" data-i="${i}">Copier le Markdown</button></div>`).join('');
- document.querySelectorAll('.cp').forEach(b=>b.onclick=()=>{const[k,t,x]=KINDS[b.dataset.i];copy(md(k,x,t))});
+ $('#cards').innerHTML=K.map(([k,t,x],i)=>`<div class="c ${k==='trophies'?'full':''}"><div class="ch"><div><span>0${i+1}</span>${t}</div><button class="cp" data-i="${i}">[ copier md ]</button></div><div class="pv"><img src="${url(k,x)}" alt="${t}"></div><code>${md(k,x,t)}</code></div>`).join('');
+ document.querySelectorAll('.cp').forEach(b=>b.onclick=()=>{const[k,t,x]=K[b.dataset.i];copy(md(k,x,t))});
 }
 $('#all').onclick=()=>copy(`<p align="center">\n  <img src="${url('stats')}" alt="GitHub Stats" />\n  <img src="${url('langs')}" alt="Top Languages" />\n</p>\n<p align="center"><img src="${url('trophies','&cols=5')}" alt="Trophies" /></p>\n<p align="center"><img src="${url('badge')}" alt="Score" /></p>`);
-document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{theme=b.dataset.t;document.querySelectorAll('.seg button').forEach(x=>x.classList.toggle('on',x===b));if(user)render()});
+document.querySelectorAll('.tg button').forEach(b=>b.onclick=()=>{theme=b.dataset.t;document.querySelectorAll('.tg button').forEach(x=>x.classList.toggle('on',x===b));if(user)render()});
 async function analyze(u){
  u=u.trim().replace(/^@/,'');$('#e').textContent='';
- if(!/^[a-zA-Z0-9-]{1,39}$/.test(u)){$('#e').textContent='Pseudo GitHub invalide';return}
+ if(!/^[a-zA-Z0-9-]{1,39}$/.test(u)){$('#e').textContent='> pseudo invalide';return}
  const b=$('#b');b.disabled=true;b.textContent='Analyse…';
  try{
-  const r=await fetch(`/api/user?username=${encodeURIComponent(u)}`),j=await r.json();
-  if(!r.ok)throw new Error(j.error||'Erreur');
-  user=u;const s=j.score;
-  $('#g').textContent=s.grade;$('#n').textContent=`${u} · Niveau ${s.level}`;
-  $('#xs').textContent=`${s.xp} XP · ${s.levelPct}% vers le niveau ${s.level+1} · ${j.stats.repos} repos · ${j.stats.commits} commits en ${j.stats.year}`;
-  $('#x').style.width='0';setTimeout(()=>$('#x').style.width=s.levelPct+'%',50);
+  const r=await fetch('/api/user?username='+encodeURIComponent(u)),j=await r.json().catch(()=>({}));
+  if(!r.ok||!j.score)throw new Error(j.error||'Erreur serveur : vérifie GITHUB_TOKEN dans Vercel');
+  user=u;const s=j.score,st=j.stats;
+  $('#g').textContent=s.grade;$('#lv').textContent='NIVEAU '+s.level;
+  $('#n').innerHTML=`<span>@</span>${u}`;
+  $('#sg').innerHTML=Array.from({length:20},(_,i)=>`<i class="${i<Math.round(s.levelPct/5)?'f':''}"></i>`).join('');
+  $('#xs').textContent=s.xp+' XP';$('#nx').textContent=s.levelPct+'% → NIV. '+(s.level+1);
+  $('#kv').innerHTML=[['commits '+st.year,st.commits],['étoiles',st.stars],['repos',st.repos],['streak',st.streak+'j']].map(([k,v])=>`<div><b>${v}</b><span>${k}</span></div>`).join('');
   render();$('#res').style.display='block';history.replaceState(null,'','?u='+u);
   $('#res').scrollIntoView({behavior:'smooth'});
- }catch(e){$('#e').textContent=e.message}
- b.disabled=false;b.textContent='Analyser';
+ }catch(e){$('#e').textContent='> '+e.message}
+ b.disabled=false;b.textContent='Analyser →';
 }
 $('#f').onsubmit=e=>{e.preventDefault();analyze($('#u').value)};
 const q=new URLSearchParams(location.search).get('u');if(q){$('#u').value=q;analyze(q)}
