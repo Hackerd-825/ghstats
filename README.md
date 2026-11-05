@@ -7,11 +7,11 @@ Le site web est dans `public/index.html` : il est servi automatiquement à la ra
 2. Sur vercel.com : "Import" du repo, puis Deploy. C'est tout.
 
 ## Utilisation dans un README
-![Stats](https://TON-APP.vercel.app/api/stats?username=hackerd_825)
-![Langages](https://TON-APP.vercel.app/api/langs?username=hackerd_825)
-![Activité](https://TON-APP.vercel.app/api/activity?username=hackerd_825)
-![XP](https://TON-APP.vercel.app/api/xp?username=hackerd_825)
-![Score](https://TON-APP.vercel.app/api/badge?username=hackerd_825)
+![Stats](https://ghstats-two.vercel.app/api/stats?username=Hackerd-825)
+![Langages](https://ghstats-two.vercel.app/api/langs?username=Hackerd-825)
+![Activité](https://ghstats-two.vercel.app/api/activity?username=Hackerd-825)
+![XP](https://ghstats-two.vercel.app/api/xp?username=Hackerd-825)
+![Score](https://ghstats-two.vercel.app/api/badge?username=Hackerd-825)
 
 Options : `theme=dark|light`, `hide_bg=true`.
 
